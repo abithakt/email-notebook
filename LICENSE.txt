@@ -1,4 +1,4 @@
-License for everything not under _posts:
+License for everything not under _posts or in README.md:
 
 The MIT License (MIT)
 
