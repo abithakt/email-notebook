@@ -1,0 +1,10 @@
+email: example@example.com
+password: blahblah
+gmail:
+	imap_server: imap.gmail.com
+	smtp_server: smtp.gmail.com
+	smtp_port: 993
+other:
+	imap_server: imap.example.com
+	smtp_server: smtp.example.com
+	smtp_port: 993
