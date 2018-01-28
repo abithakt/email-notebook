@@ -1,6 +1,6 @@
 **wiki-by-email** is a simple Python application that lets you create and maintain a wiki through email. This is primarily meant for personal knowledge management.
 
-**Note:** This app is still under development and is in no shape to be viewed by the public at the time of writing (Jan 29, 2018). Watch this space (or the [project's repo](https://github.com/abithakt/wiki-by-email)) for updates!
+**Note:** This app is still under development and is in no shape to be viewed by the public at the time of writing (Jan 27, 2018). Watch this space (or the [project's repo](https://github.com/abithakt/wiki-by-email)) for updates!
 
 ## How it works
 
