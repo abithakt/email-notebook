@@ -11,3 +11,11 @@ Most interaction with this app is by email; you make changes by emailing yoursel
 * To edit a page, request the page from the server by emailing yourself `[wiki][request]` + the page title. The server will reply with the page contents, and you can reply with the edited content (in full).
 
 More to come!
+
+<!---
+Installation)
+Usage
+Known issues
+Contributing
+License
+--->
