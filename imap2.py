@@ -29,3 +29,26 @@ mailboxes = [str(x) for x in mailboxes]
 
 
 # Find the name of the 'All Mail' folder in Gmail
+all = str("")
+for a in mailboxes:
+    if "\All" in a:
+        all = a[a.index('['):a.index(')', -2)]
+all = all[:-1]
+
+
+
+# Open 'All Mail'
+allmail = mail.select.folder(all)
+
+
+
+# Identify messages from self or from custom address
+from_messages = mail.search(['FROM', config['from']])
+
+
+
+# Identify messages with '[wiki]' or custom flag
+
+# Close folder and log out
+mail.close_folder()
+mail.logout()
