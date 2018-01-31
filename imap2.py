@@ -23,4 +23,9 @@ rv = mail.login(config['email'], config['password'])
 
 
 # List mailboxes
-#mailboxes = 
+mailboxes = mail.list_folders()
+mailboxes = [str(x) for x in mailboxes]
+
+
+
+# Find the name of the 'All Mail' folder in Gmail
