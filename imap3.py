@@ -20,7 +20,7 @@ last_accessed = datetime.now()
 
 # Log in
 
-mail = imapc(config['gmail']['imap_server'], use_uid = True)
+mail = imapc(config['gmail']['imap_server'], use_uid = True, ssl = True)
 rv = mail.login(config['email'], config['password'])
 
 
@@ -70,6 +70,8 @@ for msgid, data in mail.fetch(from_messages, ['ENVELOPE']).items():
     if str(config['flags']['wiki']) in str(envelope.subject): wikipage.append(msgid)
     #print("ID \#%d: '%s' received %s" % (msgid, envelope.subject, envelope.date))
 
+print(wikipage)
+
 
 # Get email body
 
@@ -77,7 +79,7 @@ for msgid, data in mail.fetch(from_messages, ['ENVELOPE']).items():
 response = mail.fetch(from_messages, ['RFC822', 'BODY[TEXT]'])
 print(data)
 for msgid, data in response.items():
-        parsedEmail = email.message_from_string(data['RFC822'])
+        parsedEmail = email.message_from_string(from_messages)
         body = email.message_from_string(data['BODY[TEXT]'])
         parsedBody = parsedEmail.get_payload(0)
         print(parsedBody)
