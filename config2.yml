@@ -12,7 +12,7 @@ gmail:
     imap_port: 993
 
 flags:
-    wiki: [wiki]
+    wiki: [w]
     edit: [e]
     create: [c]
     append: [a]
