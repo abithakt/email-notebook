@@ -1,4 +1,4 @@
-import email, logging, mistletoe
+import pyzmail, logging, mistletoe
 import ruamel.yaml as yaml
 from imapclient import IMAPClient as imapc
 from datetime import datetime
@@ -25,7 +25,7 @@ rv = mail.login(config['email'], config['password'])
 
 
 
-# List mailboxes
+# List mailboxes -- TODO: move this to setup file
 
 mailboxes = mail.list_folders()
 mailboxes = [str(x) for x in mailboxes]
@@ -61,29 +61,12 @@ print(from_messages)
 
 
 
-# Identify messages with '[wiki]'/custom flag
-
-wikipage = []
-for msgid, data in mail.fetch(from_messages, ['ENVELOPE']).items():
-    envelope = data[b'ENVELOPE']
-    #print(envelope.from_)
-    if str(config['flags']['wiki']) in str(envelope.subject): wikipage.append(msgid)
-    #print("ID \#%d: '%s' received %s" % (msgid, envelope.subject, envelope.date))
-
-print(wikipage)
-
-
-# Get email body
-
-#messages = mail.search(['NOT DELETED'])
-response = mail.fetch(from_messages, ['RFC822', 'BODY[TEXT]'])
-print(data)
-for msgid, data in response.items():
-        parsedEmail = email.message_from_string(from_messages)
-        body = email.message_from_string(data['BODY[TEXT]'])
-        parsedBody = parsedEmail.get_payload(0)
-        print(parsedBody)
-
+# Get email bodies
+wikipages = mail.fetch(from_messages, ['BODY[]', 'FLAGS']).items()
+print(wikipages)
+for k in wikipages:
+    message = pyzmail.PyzMessage.factory(k['BODY[]'])
+    print(message.text_part.get_payload().decode(message.text_part.charset))
 
 # Close folder and log out
 
