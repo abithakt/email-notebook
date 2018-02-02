@@ -50,8 +50,8 @@ allmail = mail.select_folder(all)
 
 # Identify messages from self/custom 'from' address
 
-from_messages = mail.search(['FROM', config['from']]) #?
-# from_messages = mail.search(['FROM', config['from'], 'SUBJECT', 'm'])
+# from_messages = mail.search(['FROM', config['from']]) #?
+from_messages = mail.search(['FROM ' + config['from'] + ' SUBJECT m'])
 # from_messages = mail.search(['FROM', config['from'], 'SINCE', config['last_accessed'], 'SUBJECT', config['flags']['wiki']])
 
 print(from_messages)
