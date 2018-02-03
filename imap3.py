@@ -1,8 +1,10 @@
-import pyzmail, logging, mistletoe
+import pyzmail, logging, mistletoe, imaplib
 import ruamel.yaml as yaml
 from imapclient import IMAPClient as imapc
 from datetime import datetime
 
+
+imaplib._MAXLINE = 10000000
 
 
 # Open config file
@@ -32,7 +34,7 @@ mailboxes = [str(x) for x in mailboxes]
 
 
 
-# Find the name of the 'All Mail' folder
+# Find the name of the 'All Mail' folder -- TODO: move this to setup file, write to config
 
 all = str("")
 for a in mailboxes:
@@ -48,11 +50,12 @@ allmail = mail.select_folder(all)
 
 
 
-# Identify messages from self/custom 'from' address
+# Identify messages from self/custom 'from' address -- only works for Gmail
 
-# from_messages = mail.search(['FROM', config['from']]) #?
-from_messages = mail.search(['FROM ' + config['from'] + ' SUBJECT m'])
-# from_messages = mail.search(['FROM', config['from'], 'SINCE', config['last_accessed'], 'SUBJECT', config['flags']['wiki']])
+search_string = 'from:' + str(config['from']) + ' "' + str(config['flags']['wiki']) + '"'
+
+#from_messages = mail.search(['FROM', config['from']]) #?
+from_messages = mail.gmail_search(search_string)
 
 print(from_messages)
 
@@ -63,7 +66,7 @@ print(from_messages)
 # Get email bodies
 wikipages = mail.fetch(from_messages, ['BODY[]', 'FLAGS']).items()
 print(wikipages)
-"""for k in wikipages:
+"""for k in wikipages: # iterate through dict
     message = pyzmail.PyzMessage.factory(k['BODY[]']) #??
     print(message.text_part.get_payload().decode(message.text_part.charset))"""
 
