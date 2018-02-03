@@ -1,7 +1,8 @@
 import pyzmail, logging, mistletoe, imaplib
 import ruamel.yaml as yaml
 from imapclient import IMAPClient as imapc
-from datetime import datetime
+#from datetime import datetime
+import pprint
 
 
 imaplib._MAXLINE = 10000000
@@ -17,7 +18,7 @@ with open("config.yml", 'r') as ymlfile:
 #if "gmail.com"
 #last accessed...
 
-last_accessed = datetime.now()
+#last_accessed = datetime.now()
 
 
 # Log in
@@ -52,9 +53,9 @@ allmail = mail.select_folder(all)
 
 # Identify messages from self/custom 'from' address -- only works for Gmail
 
-search_string = 'from:' + str(config['from']) + ' "' + str(config['flags']['wiki']) + '"'
+search_string = 'from:' + str(config['from']) + ' "' + str(config['flags']['wiki']) + '" is:read' # TODO: change to unread
 
-#from_messages = mail.search(['FROM', config['from']]) #?
+#from_messages = mail.search(['FROM', config['from']])
 from_messages = mail.gmail_search(search_string)
 
 print(from_messages)
@@ -64,11 +65,13 @@ print(from_messages)
 
 
 # Get email bodies
-wikipages = mail.fetch(from_messages, ['BODY[]', 'FLAGS']).items()
-print(wikipages)
-"""for k in wikipages: # iterate through dict
-    message = pyzmail.PyzMessage.factory(k['BODY[]']) #??
-    print(message.text_part.get_payload().decode(message.text_part.charset))"""
+
+#wikipages = mail.fetch(from_messages, ['BODY[]', 'FLAGS']).items()
+wikipages = mail.fetch(from_messages, ['BODY[]'])
+
+for i in from_messages:
+	message = pyzmail.PyzMessage.factory(wikipages[i]['BODY[]'])
+
 
 # Close folder and log out
 
