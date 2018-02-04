@@ -53,7 +53,7 @@ allmail = mail.select_folder(all)
 
 # Identify messages from self/custom 'from' address -- only works for Gmail
 
-search_string = 'from:' + str(config['from']) + ' "' + str(config['flags']['wiki']) + '" is:read' # TODO: change to unread
+search_string = 'from:' + str(config['from']) + ' "' + str(config['flags']['wiki']) + '" is:unread'
 
 #from_messages = mail.search(['FROM', config['from']])
 from_messages = mail.gmail_search(search_string)
