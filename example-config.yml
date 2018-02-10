@@ -1,8 +1,8 @@
 last_accessed: 01-01-2001
 
-email: 
-from: 
-password: 
+email: example@email.com
+from: example@email.com
+password: somepassword
 
 gmail:
     imap_server: imap.gmail.com
