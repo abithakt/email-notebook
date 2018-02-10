@@ -1,80 +1,79 @@
-import imaplib, email
+import pyzmail, logging, mistletoe, imaplib
 import ruamel.yaml as yaml
+from imapclient import IMAPClient as imapc
+#from datetime import datetime
+import pprint
+
+
+imaplib._MAXLINE = 10000000
+
 
 # Open config file
+
 with open("config.yml", 'r') as ymlfile:
 	config = yaml.safe_load(ymlfile)
 
+
+
 #if "gmail.com"
+#last accessed...
+
+#last_accessed = datetime.now()
+
 
 # Log in
-mail = imaplib.IMAP4_SSL(config['gmail']['imap_server'])
-mail.login(config['email'], config['password'])
-#mail.select('inbox')
 
-# List mailboxes
-rv, mailboxes = mail.list()
+mail = imapc(config['gmail']['imap_server'], use_uid = True, ssl = True)
+rv = mail.login(config['email'], config['password'])
 
-# Find the name of the 'All Mail' folder
+
+
+# List mailboxes -- TODO: move this to setup file
+
+mailboxes = mail.list_folders()
+mailboxes = [str(x) for x in mailboxes]
+
+
+
+# Find the name of the 'All Mail' folder -- TODO: move this to setup file, write to config
+
 all = str("")
-for i in mailboxes:
-    if "\All" in str(i, 'utf-8'):
-        a = str(i, 'utf-8')
-        all = a[a.index('['):a.index('"', -1)]
-all = '"' + all
-all = all + '"'
+for a in mailboxes:
+    if "\All" in a:
+        all = a[a.index('['):a.index(')', -2)]
+all = all[:-1]
+
+
 
 # Open 'All Mail'
-rv, data = mail.select(all)
 
-#------------------------------------------------------------------------------
+allmail = mail.select_folder(all)
 
-# Fetch all emails in 'All Mail'
-rv, data = mail.search(None, "ALL")
-print(data[0])
 
-a = """for i in str(data[0], 'utf-8').split(): # data[0].split() gets email IDs
-    rv, data = mail.fetch(i, '(RFC822)')
-    msg = email.message_from_string(data[0][1])
-    print( 'Message %s: %s' % (num, msg['Subject']))
-    print('Raw Date:', msg['Date'])
-    date_tuple = email.utils.parsedate_tz(msg['Date'])
-    if date_tuple:
-        local_date = datetime.datetime.fromtimestamp(
-            email.utils.mktime_tz(date_tuple))
-        print( "Local Date:", \
-            local_date.strftime("%a, %d %b %Y %H:%M:%S"))
-"""
 
-for num in data[0].split():
-    typ, data = mail.fetch(num, '(RFC822)')
-    print('Message %s\n%s\n' % (num, data[0][1]))
+# Identify messages from self/custom 'from' address -- only works for Gmail
 
-b = """ .
-def fetch_message(conn, msg_uid ):
+search_string = 'from:' + str(config['from']) + ' "' + str(config['flags']['wiki']) + '" is:unread'
 
-    rv, data = conn.uid('fetch', msg_uid, "(RFC822)")
-    if rv != 'OK':
-        print "ERROR fetching message #", msg_uid
-        return {}
+#from_messages = mail.search(['FROM', config['from']])
+from_messages = mail.gmail_search(search_string)
 
-    return email.message_from_string(data[0][1])  # dict-like object
-"""
-c = """ 
-def get_recipients(msg_parsed):
-    recipients = []
-    addr_fields = ['From', 'To', 'Cc', 'Bcc']
+print(from_messages)
 
-    for f in addr_fields:
-        rfield = msg_parsed.get(f, "") # Empty string if field not present
-        rlist = re.findall(ADDR_PATTERN, rfield)
-        recipients.extend(rlist)
+#----------------------------------------------------------------------------------
 
-return recipients
-"""
 
-# Store most recent email's timestamp in config file
 
-# log out
-mail.close()
+# Get email bodies
+
+#wikipages = mail.fetch(from_messages, ['BODY[]', 'FLAGS']).items()
+wikipages = mail.fetch(from_messages, ['BODY[]'])
+
+for i in from_messages:
+	message = pyzmail.PyzMessage.factory(wikipages[i]['BODY[]'])
+
+
+# Close folder and log out
+
+mail.close_folder()
 mail.logout()
