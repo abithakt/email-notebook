@@ -2,3 +2,4 @@ config.yml
 read_me.md
 pop3.py
 imap2.py
+*.swp

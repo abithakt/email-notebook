@@ -6,10 +6,11 @@ password: somepassword
 
 gmail:
     imap_server: imap.gmail.com
+    imap_port: 993
     pop_server: pop.gmail.com
     pop_port: 995
     smtp_server: smtp.gmail.com
-    imap_port: 993
+    smtp_port: 587
 
 flags:
     wiki: [wiki]
