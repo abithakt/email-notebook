@@ -6,6 +6,8 @@ import ruamel.yaml as yaml
 with open("config.yml", 'r') as ymlfile:
     config = yaml.safe_load(ymlfile)
 
+
+# Log in
 mailserver = smtplib.SMTP(config['gmail']['smtp_server'], config['gmail']['smtp_port'])
 mailserver.ehlo()
 mailserver.starttls()
