@@ -68,3 +68,5 @@ plugins:
   - jekyll-seo-tag
   - jemoji
   - jekyll-readme-index
+
+theme: jekyll-theme-hacker
