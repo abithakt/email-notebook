@@ -1,6 +1,6 @@
-# wiki-by-email
+# email-notebook
 
-**wiki-by-email** is a simple Python application that lets you create and maintain a wiki through email. It was primarily conceived for personal knowledge management, but the possibilities are endless!
+**email-notebook** is a simple Python application that lets you create and maintain a wiki through email. It was primarily conceived for personal knowledge management, but the possibilities are endless!
 
 <!---## Getting started
 
@@ -38,9 +38,9 @@ License
 
 ## Copyright and License
 
-**wiki-by-email** is licensed under the Apache license. The full text of the license can be found [here](https://github.com/abithakt/wiki-by-email/blob/master/LICENSE).
+**email-notebook** is licensed under the Apache license. The full text of the license can be found [here](https://github.com/abithakt/wiki-by-email/blob/master/LICENSE).
 
-**wiki-by-email** (c) 2018 Abitha K Thyagarajan
+**email-notebook** (c) 2018 Abitha K Thyagarajan
 
 <!---
 ## Getting started
